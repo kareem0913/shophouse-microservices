@@ -4,4 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+    <include file="/db/changelog/changeset/00001_create_categories_table.xml" relativeToChangelogFile="false" author="kareem"/>
+    <include file="/db/changelog/changeset/00002_create_products_table.xml" relativeToChangelogFile="false" author="kareem"/>
+    <include file="/db/changelog/changeset/00003_create_product_categories_table.xml" relativeToChangelogFile="false" author="kareem"/>
+    <include file="/db/changelog/changeset/00004_create_product_images_table.xml" relativeToChangelogFile="false" author="kareem"/>
+
 </databaseChangeLog>

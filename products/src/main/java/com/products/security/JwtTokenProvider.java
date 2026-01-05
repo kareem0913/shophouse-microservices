@@ -1,20 +1,18 @@
-package com.users.security;
+package com.products.security;
 
-import com.users.config.AppProperties;
+import com.products.config.AppProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
-
-import static com.users.util.Util.mapUserAuthorityToString;
 
 @Component
 @Slf4j
@@ -27,21 +25,13 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(appProperties.getJwtSecret().getBytes());
     }
 
-    public String generateToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        return generateTokenFromUserId(userPrincipal.getId(),
-                userPrincipal.getUsername(),
-                mapUserAuthorityToString(userPrincipal.getAuthorities()));
-    }
-
-    private String generateTokenFromUserId(Long userId, String username, Set<String> roles) {
+    public String generateTokenFromUserId(Long userId, String username) {
         Instant now = Instant.now();
         Instant expiryDate = now.plus(appProperties.getJwtExpiration(), ChronoUnit.MILLIS);
 
         return Jwts.builder()
                 .subject(Long.toString(userId))
                 .claim("username", username)
-                .claim("roles", roles)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiryDate))
                 .signWith(getSigningKey())
@@ -66,6 +56,16 @@ public class JwtTokenProvider {
                 .getPayload();
 
         return claims.get("username", String.class);
+    }
+
+    public List<String> getUserRolesFromToken(String token){
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.get("roles", List.class);
     }
 
     public boolean validateToken(String authToken) {

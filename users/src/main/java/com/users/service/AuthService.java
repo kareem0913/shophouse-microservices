@@ -7,7 +7,6 @@ import com.users.model.dto.auth.JwtAuthenticationResponse;
 import com.users.model.dto.auth.LoginRequest;
 import com.users.model.dto.auth.UserRegistrationRequest;
 import com.users.model.entity.Role;
-import com.users.model.enums.RoleName;
 import com.users.repository.RoleRepository;
 import com.users.repository.UserRepository;
 import com.users.security.JwtTokenProvider;
@@ -16,7 +15,6 @@ import com.users.security.UserPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Set;
+
+import static com.users.util.Util.mapUserAuthorityToString;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -136,9 +137,9 @@ public class AuthService {
         long expiresIn = expiryDate.getTime() - System.currentTimeMillis();
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        Set<String> roles = userPrincipal.getAuthorities().stream()
-                .map(authority -> authority.getAuthority().replace("ROLE_", ""))
-                .collect(java.util.stream.Collectors.toSet());
+
+        Set<String> roles = mapUserAuthorityToString(userPrincipal.getAuthorities());
+
 
         return new JwtAuthenticationResponse(
                 jwt,
