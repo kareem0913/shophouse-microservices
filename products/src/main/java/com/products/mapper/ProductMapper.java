@@ -3,7 +3,6 @@ package com.products.mapper;
 import com.products.config.AppProperties;
 import com.products.model.dto.product.ProductCreate;
 import com.products.model.dto.product.ProductResponse;
-import com.products.model.entity.Category;
 import com.products.model.entity.Product;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -26,14 +25,11 @@ public abstract class ProductMapper {
     @Mapping(target = "categories", ignore = true)
     public abstract Product toProduct(ProductCreate productCreate);
 
-//    public abstract Product  toProduct(ProductResponse productResponse);
-
-
     @AfterMapping
     protected void setImageUrls(Product product, @MappingTarget ProductResponse productResponse) {
         if (product.getImagesUrls() != null) {
             productResponse.setImagesUrls(product.getImagesUrls().stream()
-                    .map(image -> appProperties.getAppUrl() + image.getImageUrl())
+                    .map(image -> appProperties.getFilesUrl() + image.getImageUrl())
                     .collect(Collectors.toSet()));
         }
     }

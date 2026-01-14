@@ -5,38 +5,38 @@ import com.products.error.exception.ResourceNotFoundException;
 import com.products.mapper.CategoryMapper;
 import com.products.model.dto.category.CategoryCreate;
 import com.products.model.dto.category.CategoryResponse;
+import com.products.model.dto.file.ImageResponse;
+import com.products.model.dto.file.ImageRequest;
 import com.products.model.entity.Category;
 import com.products.repository.CategoryRepository;
+import com.products.service.client.FileFeignClient;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
 
-import static com.products.util.Util.deleteFile;
-import static com.products.util.Util.saveFile;
 
 @Service
 @Slf4j
-//@RequiredArgsConstructor
 public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
-    private final Path uploadDir;
+    private final FileFeignClient fileFeignClient;
+    private static final String SUBFOLDER = "categories";
 
     public AdminCategoryServiceImpl(CategoryRepository categoryRepository,
                                     CategoryMapper categoryMapper,
-                                    @Value("${app.properties.upload-path}") String dir
+                                    FileFeignClient fileFeignClient
     ) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
-        this.uploadDir = Paths.get(dir).toAbsolutePath().normalize();
+        this.fileFeignClient = fileFeignClient;
     }
 
     @Override
@@ -70,8 +70,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
         MultipartFile img = categoryCreate.getImage();
         if(!img.isEmpty()){
-            String stored = saveFile(img, uploadDir, "categories");
-            category.setImageUrl(stored);
+            category.setImageUrl(saveImage(img));
         }
 
         Category createdCategory = categoryRepository.save(category);
@@ -101,9 +100,8 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
         MultipartFile image = categoryCreate.getImage();
         if(!image.isEmpty()){
-            deleteFile(uploadDir, existingCategory.getImageUrl());
-            String stored = saveFile(image, uploadDir, "categories");
-            existingCategory.setImageUrl(stored);
+            fileFeignClient.deleteImagesApi(List.of(existingCategory.getImageUrl()));
+            existingCategory.setImageUrl(saveImage(image));
         }
 
         Category updatedCategory = categoryRepository.save(existingCategory);
@@ -140,7 +138,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         });
 
         if (category.getImageUrl() != null) {
-            deleteFile(uploadDir, category.getImageUrl());
+            fileFeignClient.deleteImagesApi(List.of(category.getImageUrl()));
         }
 
         categoryRepository.delete(category);
@@ -149,5 +147,13 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     private boolean existsByName(String name) {
         return categoryRepository.existsByName(name);
+    }
+
+    private String saveImage(MultipartFile image){
+        ImageRequest imageRequest = new ImageRequest(SUBFOLDER, new HashSet<>(List.of(image)));
+        ImageResponse stored = fileFeignClient.saveImagesApi(imageRequest);
+        @SuppressWarnings("unchecked")
+        List<String> imageUrls = (List<String>) stored.data();
+        return imageUrls.getFirst();
     }
 }

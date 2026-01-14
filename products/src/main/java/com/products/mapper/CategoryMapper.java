@@ -26,7 +26,7 @@ public abstract class CategoryMapper {
     @AfterMapping
     protected void buildFullImageUrl(Category category, @MappingTarget CategoryResponse dto) {
         if (category.getImageUrl() != null) {
-            dto.setImageUrl(appProperties.getAppUrl() + category.getImageUrl());
+            dto.setImageUrl(appProperties.getFilesUrl() + category.getImageUrl());
         }
     }
 }

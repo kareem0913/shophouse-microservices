@@ -1,4 +1,4 @@
-package com.products.config;
+package com.files.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
