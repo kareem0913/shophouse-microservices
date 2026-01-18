@@ -1,6 +1,6 @@
-package com.products.security;
+package com.gatewayserver.security;
 
-import com.products.config.AppProperties;
+import com.gatewayserver.config.AppProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Component
 @Slf4j

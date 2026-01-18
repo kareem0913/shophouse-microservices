@@ -49,12 +49,4 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(e.getCode(), e.getMessage(), e.getDescription(), currentTimestamp());
     }
 
-    @ExceptionHandler(NotAuthorizedException.class)
-    public ErrorResponse handleNotAuthorizedException(NotAuthorizedException e) {
-        return new ErrorResponse(e.getCode(),
-                e.getMessage(),
-                e.getDescription(),
-                currentTimestamp()
-        );
-    }
 }

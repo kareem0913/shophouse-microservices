@@ -1,4 +1,4 @@
-package com.products.config;
+package com.gatewayserver.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "app.properties")
 public class AppProperties {
-    private String uploadPath;
-    private String filesUrl;
-    private String gatewayUrl;
+    private String jwtSecret;
+    private long jwtExpiration;
 }
