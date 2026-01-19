@@ -4,4 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+    <include file="/db/changelog/changeset/00001_create_cart_table.xml" relativeToChangelogFile="false" author="kareem"/>
+    <include file="/db/changelog/changeset/00002_create_wishlist_table.xml" relativeToChangelogFile="false" author="kareem"/>
+
 </databaseChangeLog>
