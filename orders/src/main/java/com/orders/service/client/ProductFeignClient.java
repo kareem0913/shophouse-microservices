@@ -1,6 +1,6 @@
-package com.cart.service.client;
+package com.orders.service.client;
 
-import com.cart.model.dto.feignclient.ProductResponse;
+import com.orders.model.dto.product.ProductResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

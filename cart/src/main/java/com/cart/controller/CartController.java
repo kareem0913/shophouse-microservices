@@ -5,10 +5,9 @@ import com.cart.model.dto.cart.CartResponse;
 import com.cart.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("user-cart")
@@ -17,13 +16,10 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping
-    public Page<CartResponse> httpGetCartCartItems(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+    public List<CartResponse> httpGetCartItems(
             @RequestHeader("user-id") Long userId
             ){
-        Pageable pageable = PageRequest.of(page, size);
-        return cartService.cartItems(userId, pageable);
+        return cartService.cartItems(userId);
     }
 
     @PostMapping

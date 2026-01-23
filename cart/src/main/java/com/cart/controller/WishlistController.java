@@ -15,7 +15,7 @@ public class WishlistController {
     private final WishlistService wishlistService;
 
     @GetMapping
-    public Page<WishlistResponse> httpGetCartCartItems(
+    public Page<WishlistResponse> httpGetWishlistItems(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestHeader("user-id") Long userId

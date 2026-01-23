@@ -11,6 +11,7 @@ public class CartMapper {
     public static CartResponse toCartResponse(Cart cart, ProductResponse product) {
         return CartResponse.builder()
                 .id(cart.getId())
+                .productId(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
                 .discount(product.getDiscount())

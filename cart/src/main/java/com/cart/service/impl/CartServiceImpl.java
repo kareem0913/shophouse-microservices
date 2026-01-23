@@ -10,9 +10,9 @@ import com.cart.service.CartService;
 import com.cart.service.client.ProductFeignClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.cart.mapper.CartMapper.toCart;
 import static com.cart.mapper.CartMapper.toCartResponse;
@@ -24,12 +24,13 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductFeignClient productFeignClient;
     @Override
-    public Page<CartResponse> cartItems(final Long userId, Pageable pageable) {
-        return cartRepository.findByUserId(userId, pageable)
+    public List<CartResponse> cartItems(final Long userId) {
+        return cartRepository.findByUserId(userId)
+                .stream()
                 .map(item -> {
                     ProductResponse productResponse =  productFeignClient.httpGetProductById(item.getProductId());
                     return toCartResponse(item, productResponse);
-                });
+                }).toList();
     }
 
     @Override

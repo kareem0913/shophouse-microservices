@@ -24,7 +24,7 @@ public class AuthFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (path.matches("/cart(/.*)?")){
+        if (path.matches("/cart(/.*)?") || path.matches("/orders(/.*)?")){
             String authHeader = exchange.getRequest()
                     .getHeaders()
                     .getFirst(HttpHeaders.AUTHORIZATION);

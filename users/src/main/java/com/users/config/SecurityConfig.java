@@ -80,7 +80,8 @@ public class SecurityConfig {
                                         "/auth/**", "/public/**",
                                         "/error/**", "/swagger-ui.html",
                                         "/swagger-ui/**", "/v3/api-docs",
-                                        "/v3/api-docs/**", "/actuator/**"
+                                        "/v3/api-docs/**", "/actuator/**",
+                                        "/profile/internal"
                                 ).permitAll()
 
                                 // Admin only endpoints

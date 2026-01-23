@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +22,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserProfileResponse getCurrentUserProfile(UserPrincipal currentUser) {
         User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("not found", "user not found"));
+
+        return mapToUserProfileResponse(user);
+    }
+
+    public UserProfileResponse getCurrentUserProfile(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("not found", "user not found"));
 
         return mapToUserProfileResponse(user);
