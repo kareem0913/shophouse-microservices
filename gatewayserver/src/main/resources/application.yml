@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: gatewayserver
+
+  profiles:
+    active: local
+
+  config:
+    import: "configserver:http://localhost:8072/"
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 7s
+
+server:
+  port: 8075
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 2
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+      userCircuitBreakerConfig:
+        slidingWindowSize: 8
+        permittedNumberOfCallsInHalfOpenState: 4
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+    instances:
+      userCircuitBreaker:
+        baseConfig: userCircuitBreakerConfig

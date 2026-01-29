@@ -49,4 +49,8 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(e.getCode(), e.getMessage(), e.getDescription(), currentTimestamp());
     }
 
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ErrorResponse handleServiceUnavailableException(ServiceUnavailableException e) {
+        return new ErrorResponse(e.getCode(), e.getMessage(), e.getDescription(), currentTimestamp());
+    }
 }

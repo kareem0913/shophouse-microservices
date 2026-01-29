@@ -3,6 +3,7 @@ package com.cart.error;
 import com.cart.error.exception.BadRequestException;
 import com.cart.error.exception.DuplicateResourceException;
 import com.cart.error.exception.ResourceNotFoundException;
+import com.cart.error.exception.ServiceUnavailableException;
 import com.cart.error.model.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +44,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ErrorResponse handleBadRequestException(BadRequestException e) {
+        return new ErrorResponse(e.getCode(), e.getMessage(), e.getDescription(), currentTimestamp());
+    }
+
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ErrorResponse handleServiceUnavailableException(ServiceUnavailableException e) {
         return new ErrorResponse(e.getCode(), e.getMessage(), e.getDescription(), currentTimestamp());
     }
 

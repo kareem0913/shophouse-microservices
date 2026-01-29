@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient("files")
+@FeignClient(name = "files", fallback =  FileFallback.class)
 public interface FileFeignClient {
     @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ImageResponse saveImagesApi(ImageRequest images);

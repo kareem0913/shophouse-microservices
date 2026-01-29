@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient("products")
+@FeignClient(name = "products", fallback =  ProductFallback.class)
 public interface ProductFeignClient {
     @GetMapping("/{id}")
     ProductResponse httpGetProductById(@PathVariable Long id);
