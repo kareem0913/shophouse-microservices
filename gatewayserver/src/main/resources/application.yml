@@ -3,10 +3,10 @@ spring:
     name: gatewayserver
 
   profiles:
-    active: local
+    active: docker
 
   config:
-    import: "configserver:http://localhost:8072/"
+    import: "configserver:http://configserver:8072/"
 
   cloud:
     gateway:

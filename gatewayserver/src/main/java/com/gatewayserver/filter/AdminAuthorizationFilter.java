@@ -27,13 +27,14 @@ public class AdminAuthorizationFilter implements GlobalFilter {
 
         String path = exchange.getRequest().getURI().getPath();
 
-        if (path.matches(".*/admin(/.*)?")) {
+        if (path.matches(".*/admin(/.*)?") && !path.equals("/users/auth/admin/create")) {
 
             String authHeader = exchange.getRequest()
                     .getHeaders()
                     .getFirst(HttpHeaders.AUTHORIZATION);
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                log.info("Admin Authorization Filter - access denied");
                 return unauthorized(exchange);
             }
 
@@ -41,7 +42,6 @@ public class AdminAuthorizationFilter implements GlobalFilter {
 
             if (!jwtTokenProvider.validateToken(token)
                     || !isAdmin(jwtTokenProvider.getUserRolesFromToken(token))) {
-
                 log.info("Admin Authorization Filter - access denied");
                 return unauthorized(exchange);
             }

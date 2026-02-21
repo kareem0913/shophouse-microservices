@@ -1,0 +1,226 @@
+services:
+  # Database Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: shophouse-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Postgres init helper (runs once to create DBs)
+  postgres-init:
+    image: postgres:15-alpine
+    container_name: shophouse-postgres-init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: postgres
+    entrypoint: ["sh", "-c", "until pg_isready -h postgres -U postgres; do sleep 1; done; psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_cart OWNER postgres;\" && psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_orders OWNER postgres;\" && psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_products OWNER postgres;\" && psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_users OWNER postgres;\" && psql -h postgres -U postgres -c \"ALTER USER postgres WITH PASSWORD 'postgres';\"; echo Init complete; sleep 2"]
+    restart: "no"
+    networks:
+      - shophouse-network
+
+  # Config Server Service - Starts First
+  configserver:
+    image: kareemzaher/shophouse-microservices-configserver:latest
+    container_name: shophouse-configserver
+    ports:
+      - "8072:8072"
+    environment:
+      - SPRING_APPLICATION_NAME=configserver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8072/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Eureka Server Service - Starts After Config Server
+  eurekaserver:
+    image: kareemzaher/shophouse-microservices-eurekaserver:latest
+    container_name: shophouse-eurekaserver
+    ports:
+      - "8074:8074"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=eurekaserver
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    depends_on:
+      configserver:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8074/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Files Service - Starts After Eureka
+  files:
+    image: kareemzaher/shophouse-microservices-files:latest
+    container_name: shophouse-files
+    ports:
+      - "8073:8073"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=files
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    volumes:
+      - uploads:/uploads
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8073/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Products Service - Starts After Eureka
+  products:
+    image: kareemzaher/shophouse-microservices-products:latest
+    container_name: shophouse-products
+    ports:
+      - "8070:8070"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=products
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8070/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Cart Service - Starts After Eureka
+  cart:
+    image: kareemzaher/shophouse-microservices-cart:latest
+    container_name: shophouse-cart
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=cart
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Orders Service - Starts After Eureka
+  orders:
+    image: kareemzaher/shophouse-microservices-orders:latest
+    container_name: shophouse-orders
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=orders
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Users Service - Starts After Eureka
+  users:
+    image: kareemzaher/shophouse-microservices-users:latest
+    container_name: shophouse-users
+    ports:
+      - "8071:8071"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=users
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8071/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+  # Gateway Server Service - Starts Last
+  gatewayserver:
+    image: kareemzaher/shophouse-microservices-gatewayserver:latest
+    container_name: shophouse-gatewayserver
+    ports:
+      - "8075:8075"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=gatewayserver
+      - SPRING_CONFIG_IMPORT=configserver:http://configServer:8072/
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      products:
+        condition: service_healthy
+      cart:
+        condition: service_healthy
+      orders:
+        condition: service_healthy
+      users:
+        condition: service_healthy
+      files:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8075/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shophouse-network
+
+volumes:
+  postgres_data:
+  uploads:
+
+networks:
+  shophouse-network:
+    driver: bridge
+

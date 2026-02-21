@@ -29,7 +29,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
-        body.put("message", "You need to login to access this resource");
+        body.put("message", authException.getMessage());
         body.put("path", request.getServletPath());
 
         ObjectMapper mapper = new ObjectMapper();

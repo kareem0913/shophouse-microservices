@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.http.HttpMethod;
+
+import java.time.Duration;
 
 @Configuration
 public class RouteConfig {
@@ -19,8 +22,12 @@ public class RouteConfig {
                                 filter.rewritePath("/users/(?<segment>.*)","/${segment}")
                                         .circuitBreaker(config ->
                                         config.setName("userCircuitBreaker")
-                                                .setFallbackUri(FALLBACK_URI)
-                                        ))
+                                                .setFallbackUri(FALLBACK_URI))
+                                        .retry(retryConfig -> retryConfig.setRetries(3)
+                                                .setMethods(HttpMethod.GET)
+                                                .setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true))
+
+                        )
                         .uri("lb://USERS"))
                 .route(predicate ->
                         predicate.path("/products/**")
@@ -29,7 +36,11 @@ public class RouteConfig {
                                                 .circuitBreaker(config ->
                                                         config.setName("productCircuitBreaker")
                                                                 .setFallbackUri(FALLBACK_URI)
-                                                ))
+                                                )
+                                                .retry(retryConfig -> retryConfig.setRetries(3)
+                                                        .setMethods(HttpMethod.GET)
+                                                        .setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true))
+                                )
                                 .uri("lb://PRODUCTS"))
                 .build();
     }

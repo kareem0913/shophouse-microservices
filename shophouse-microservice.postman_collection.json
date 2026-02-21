@@ -1,0 +1,2010 @@
+{
+	"info": {
+		"_postman_id": "0f79614b-5642-4f56-9568-0da82b7aad25",
+		"name": "shophouse-microservice",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32286476"
+	},
+	"item": [
+		{
+			"name": "users service",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "user  register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.collectionVariables.set(\"token\",jsonData.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"kareemm\",\n    \"email\": \"test.555@test.com\",\n    \"phone\": \"1016899037\",\n    \"password\": \"StrongP@ssw0rd\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{users-service}}/auth/register",
+									"host": [
+										"{{users-service}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create - admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.collectionVariables.set(\"token\",jsonData.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"adminuser2\",\n    \"email\": \"admin8@example.com\",\n    \"phone\": \"01016899037\",\n    \"password\": \"StrongPass123!\",\n    \"adminKey\": \"SUPER_SECRET_ADMIN_KEY\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{users-service}}/auth/admin/create",
+									"host": [
+										"{{users-service}}"
+									],
+									"path": [
+										"auth",
+										"admin",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.collectionVariables.set(\"token\",jsonData.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "// admin\n// {\n//     \"username\": \"adminUser\",\n//     \"password\": \"StrongPass123!\"\n// }\n// user\n{\n    \"username\": \"karee6m\",\n    \"password\": \"StrongP@ssw0rd\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{users-service}}/auth/login",
+									"host": [
+										"{{users-service}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "profile",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{users-service}}/profile",
+									"host": [
+										"{{users-service}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "shut down",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{users-service}}/actuator/shutdown",
+							"host": [
+								"{{users-service}}"
+							],
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products service",
+			"item": [
+				{
+					"name": "admin",
+					"item": [
+						{
+							"name": "categories",
+							"item": [
+								{
+									"name": "all categories",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/admin/categories",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories"
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "get category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/admin/categories/1",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories",
+												"1"
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "get category by parent id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/admin/categories/parent/1",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories",
+												"parent",
+												"1"
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "create category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhZG1pblVzZXIiLCJpYXQiOjE3NTUyMDUxNzQsImV4cCI6MTc1NTIwODc3NH0.9LmmzkPW_IKjFuUq32YHQn9RxaXBOHHJsRBcL7-9hlSKqZLk7ZvBbJfhz0Hk9Rvs",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "test",
+													"type": "text"
+												},
+												{
+													"key": "parentId",
+													"value": "0",
+													"type": "text"
+												},
+												{
+													"key": "position",
+													"value": "0",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "postman-cloud:///1f07204c-891a-4830-b11b-656cfa51e9d5"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{products-service}}/admin/categories",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories"
+											]
+										},
+										"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+									},
+									"response": []
+								},
+								{
+									"name": "update category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept-Language",
+												"value": "en",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "test19",
+													"type": "text"
+												},
+												{
+													"key": "parentId",
+													"value": "",
+													"type": "text"
+												},
+												{
+													"key": "position",
+													"value": "0",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "postman-cloud:///1eee84e8-6ba6-4640-b373-ec606162e160"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{products-service}}/admin/categories/25",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories",
+												"25"
+											]
+										},
+										"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+									},
+									"response": []
+								},
+								{
+									"name": "change status",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhZG1pblVzZXIiLCJpYXQiOjE3NTUyMTUxMTksImV4cCI6MTc1NTIxODcxOX0.nTbt4KLhXCS0AegiZX6DE6XBsxZCsvMW9WwPxE7mQwLwAJCHX6s9NY1yQQ3l60ym",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{products-service}}/admin/categories/1/status?status=true",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories",
+												"1",
+												"status"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "true"
+												}
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "delete category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Successful DELETE request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+													"});",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{products-service}}/admin/categories/25",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"categories",
+												"25"
+											]
+										},
+										"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "products",
+							"item": [
+								{
+									"name": "all products",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/admin/products",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products"
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "get product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/admin/products/1",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products",
+												"1"
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "all products by category id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/admin/products/category/2",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products",
+												"category",
+												"2"
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "create product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Successful POST request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+													"});",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "Sample Product",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "This is a sample product description",
+													"type": "text"
+												},
+												{
+													"key": "price",
+													"value": "100.00",
+													"type": "text"
+												},
+												{
+													"key": "discount",
+													"value": "10.00",
+													"type": "text"
+												},
+												{
+													"key": "discountType",
+													"value": "PERCENTAGE",
+													"type": "text"
+												},
+												{
+													"key": "quantity",
+													"value": "100",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "true",
+													"type": "text"
+												},
+												{
+													"key": "categoriesIds",
+													"value": "2",
+													"type": "text"
+												},
+												{
+													"key": "categoriesIds",
+													"value": "4",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "images",
+													"type": "file",
+													"src": "postman-cloud:///1f05529f-572f-4fe0-834d-ad8cc7dc8497"
+												},
+												{
+													"key": "images",
+													"type": "file",
+													"src": "postman-cloud:///1f07204c-891a-4830-b11b-656cfa51e9d5"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{products-service}}/admin/products",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products"
+											]
+										},
+										"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+									},
+									"response": []
+								},
+								{
+									"name": "update product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Successful PUT request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+													"});",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "Sample Product",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Sample Description",
+													"type": "text"
+												},
+												{
+													"key": "price",
+													"value": "99.99",
+													"type": "text"
+												},
+												{
+													"key": "discount",
+													"value": "10",
+													"type": "text"
+												},
+												{
+													"key": "discountType",
+													"value": "AMOUNT",
+													"type": "text"
+												},
+												{
+													"key": "quantity",
+													"value": "100",
+													"type": "text"
+												},
+												{
+													"key": "categoriesIds",
+													"value": "3",
+													"type": "text"
+												},
+												{
+													"key": "categoriesIds",
+													"value": "4",
+													"type": "text"
+												},
+												{
+													"key": "images",
+													"type": "file",
+													"src": "postman-cloud:///1eee84e8-6ba6-4640-b373-ec606162e160"
+												},
+												{
+													"key": "images",
+													"type": "file",
+													"src": "postman-cloud:///1ef46735-6d77-4980-b9fa-a40b5f640f60"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{products-service}}/admin/products/1",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products",
+												"1"
+											]
+										},
+										"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+									},
+									"response": []
+								},
+								{
+									"name": "change status",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhZG1pblVzZXIiLCJpYXQiOjE3NTUyMTUxMTksImV4cCI6MTc1NTIxODcxOX0.nTbt4KLhXCS0AegiZX6DE6XBsxZCsvMW9WwPxE7mQwLwAJCHX6s9NY1yQQ3l60ym",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{products-service}}/admin/products/1/status?status=true",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products",
+												"1",
+												"status"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "true"
+												}
+											]
+										},
+										"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+									},
+									"response": []
+								},
+								{
+									"name": "delete product",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Successful DELETE request\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+													"});",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{products-service}}/admin/products/2",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"admin",
+												"products",
+												"2"
+											]
+										},
+										"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "public",
+					"item": [
+						{
+							"name": "categories",
+							"item": [
+								{
+									"name": "all categories",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/categories?page=0&size=10",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"categories"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get category",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/categories/1",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"categories",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get category by parent id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/categories/parent/1?page=0&size=10",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"categories",
+												"parent",
+												"1"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "products",
+							"item": [
+								{
+									"name": "all products",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/products",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"products"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/products/1",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"products",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get product by category id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{products-service}}/products/category/2?page=0&size=10",
+											"host": [
+												"{{products-service}}"
+											],
+											"path": [
+												"products",
+												"category",
+												"2"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "shut down",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{products-service}}/actuator/shutdown",
+							"host": [
+								"{{products-service}}"
+							],
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart service",
+			"item": [
+				{
+					"name": "cart",
+					"item": [
+						{
+							"name": "cart items",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUyODUxMjIsImV4cCI6MTc1NTI4ODcyMn0.am28XEFg0Gd3iEw8bi8H4HwBavHE_osu1FxSQzIHeZV3hXZUpLhv91mcpZ4Hrftw"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{cart-service}}/user-cart",
+									"host": [
+										"{{cart-service}}"
+									],
+									"path": [
+										"user-cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add item",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUyODUxMjIsImV4cCI6MTc1NTI4ODcyMn0.am28XEFg0Gd3iEw8bi8H4HwBavHE_osu1FxSQzIHeZV3hXZUpLhv91mcpZ4Hrftw"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"productId\": 1,\n    \"quantity\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{cart-service}}/user-cart",
+									"host": [
+										"{{cart-service}}"
+									],
+									"path": [
+										"user-cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove item",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUyODUxMjIsImV4cCI6MTc1NTI4ODcyMn0.am28XEFg0Gd3iEw8bi8H4HwBavHE_osu1FxSQzIHeZV3hXZUpLhv91mcpZ4Hrftw"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{cart-service}}/user-cart/10",
+									"host": [
+										"{{cart-service}}"
+									],
+									"path": [
+										"user-cart",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "wishlist",
+					"item": [
+						{
+							"name": "wishlist items",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUyODUxMjIsImV4cCI6MTc1NTI4ODcyMn0.am28XEFg0Gd3iEw8bi8H4HwBavHE_osu1FxSQzIHeZV3hXZUpLhv91mcpZ4Hrftw"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{cart-service}}/wishlist?page=0&size=10",
+									"host": [
+										"{{cart-service}}"
+									],
+									"path": [
+										"wishlist"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add to wishlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUyODUxMjIsImV4cCI6MTc1NTI4ODcyMn0.am28XEFg0Gd3iEw8bi8H4HwBavHE_osu1FxSQzIHeZV3hXZUpLhv91mcpZ4Hrftw"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{cart-service}}/wishlist/add/1",
+									"host": [
+										"{{cart-service}}"
+									],
+									"path": [
+										"wishlist",
+										"add",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove from wishlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUyODUxMjIsImV4cCI6MTc1NTI4ODcyMn0.am28XEFg0Gd3iEw8bi8H4HwBavHE_osu1FxSQzIHeZV3hXZUpLhv91mcpZ4Hrftw"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{cart-service}}/wishlist/1",
+									"host": [
+										"{{cart-service}}"
+									],
+									"path": [
+										"wishlist",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "shut down",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{cart-service}}/actuator/shutdown",
+							"host": [
+								"{{cart-service}}"
+							],
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "eurekaserver",
+			"item": [
+				{
+					"name": "eureka_apps",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8074/eureka/apps/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8074",
+							"path": [
+								"eureka",
+								"apps",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders-service",
+			"item": [
+				{
+					"name": "admin",
+					"item": [
+						{
+							"name": "orders",
+							"item": [
+								{
+									"name": "all orders",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhZG1pblVzZXIiLCJpYXQiOjE3NTU0NTc1ODQsImV4cCI6MTc1NTQ2MTE4NH0.uOVbNgEeW3FadaIyw6xIXLsSpij0ooyWVmJVo-7AV89orz5ebbfzWzpIABCE8wSg"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{order-service}}/admin",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"admin"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "order by id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhZG1pblVzZXIiLCJpYXQiOjE3NTU0NTc1ODQsImV4cCI6MTc1NTQ2MTE4NH0.uOVbNgEeW3FadaIyw6xIXLsSpij0ooyWVmJVo-7AV89orz5ebbfzWzpIABCE8wSg"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{order-service}}/admin/1",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"admin",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "cange order status",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJhZG1pblVzZXIiLCJpYXQiOjE3NTU0NTc1ODQsImV4cCI6MTc1NTQ2MTE4NH0.uOVbNgEeW3FadaIyw6xIXLsSpij0ooyWVmJVo-7AV89orz5ebbfzWzpIABCE8wSg",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{order-service}}/admin/4/status?status=SHIPPED",
+											"host": [
+												"{{order-service}}"
+											],
+											"path": [
+												"admin",
+												"4",
+												"status"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "SHIPPED"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "my orders",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTU0NTE3MDksImV4cCI6MTc1NTQ1NTMwOX0.Bi65r2nyXg19ZbUnFKLVue7QVLtbr2S3eoVh71kOSpnKbwAIiAdrzuTl7Gzz5lk2"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{order-service}}/user",
+									"host": [
+										"{{order-service}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order by id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTU0NTE3MDksImV4cCI6MTc1NTQ1NTMwOX0.Bi65r2nyXg19ZbUnFKLVue7QVLtbr2S3eoVh71kOSpnKbwAIiAdrzuTl7Gzz5lk2"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{order-service}}/user/1",
+									"host": [
+										"{{order-service}}"
+									],
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "place order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJrYXJlZW0iLCJpYXQiOjE3NTUzODE4NjMsImV4cCI6MTc1NTM4NTQ2M30.OpO1nzBe7pYMk5e_RHCrBUVt0DlNnv7osgxGvbqA7QgJLauiwDDWPGltPS3XExyA",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{order-service}}/user",
+									"host": [
+										"{{order-service}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "shut down",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{order-service}}/actuator/shutdown",
+							"host": [
+								"{{order-service}}"
+							],
+							"path": [
+								"actuator",
+								"shutdown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "configserver",
+			"item": [
+				{
+					"name": "encrypt",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\"test\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8072/encrypt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8072",
+							"path": [
+								"encrypt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "decrypt",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a114cbc254dc9e4147442442af08ad04b525e0f2986e5fe0fd5af732ba6e32d2",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8072/decrypt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8072",
+							"path": [
+								"decrypt"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "actuator",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8071/actuator/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"actuator",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "users-service",
+			"value": "http://localhost:8080/api"
+		},
+		{
+			"key": "products-service",
+			"value": ""
+		},
+		{
+			"key": "cart-service",
+			"value": ""
+		},
+		{
+			"key": "order-service",
+			"value": ""
+		}
+	]
+}
