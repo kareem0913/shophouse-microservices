@@ -9,23 +9,6 @@
 
 ---
 
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Services](#services)
-- [Core Features](#core-features)
-- [Technology Stack](#technology-stack)
-- [Quick Start](#quick-start)
-- [API Documentation](#api-documentation)
-- [Service Ports](#service-ports)
-- [Project Structure](#project-structure)
-- [Configuration](#configuration)
-- [Troubleshooting](#troubleshooting)
-- [Contact](#contact)
-
----
-
 ## 🎯 Overview
 
 **ShopHouse** is a distributed microservices architecture. It demonstrates enterprise-level patterns including service discovery, API gateway, resilience patterns, centralized configuration, and inter-service communication.
