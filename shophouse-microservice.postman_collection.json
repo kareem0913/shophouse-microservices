@@ -1988,23 +1988,23 @@
 	"variable": [
 		{
 			"key": "token",
-			"value": ""
+			"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI1IiwidXNlcm5hbWUiOiJhZG1pbnVzZXIyIiwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzcxNjg3NzcyLCJleHAiOjE3NzE2OTEzNzJ9.VYVIgWAg-Y8paw-j8xqhRvCtpekbVGkRsA3dv6RdcPjMEqiA7gbTFCO87H1a_WbQ"
 		},
 		{
 			"key": "users-service",
-			"value": "http://localhost:8080/api"
+			"value": "http://localhost:8075/users"
 		},
 		{
 			"key": "products-service",
-			"value": ""
+			"value": "http://localhost:8075/products"
 		},
 		{
 			"key": "cart-service",
-			"value": ""
+			"value": "http://localhost:8075/cart"
 		},
 		{
 			"key": "order-service",
-			"value": ""
+			"value": "http://localhost:8075/orders"
 		}
 	]
 }

@@ -13,8 +13,6 @@
 
 **ShopHouse** is a distributed microservices architecture. It demonstrates enterprise-level patterns including service discovery, API gateway, resilience patterns, centralized configuration, and inter-service communication.
 
-The project is fully containerized and can be deployed with a single command using Docker Compose—no prerequisites or external setup required.
-
 ---
 
 ## 🏗️ Architecture

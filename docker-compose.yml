@@ -28,7 +28,28 @@ services:
         condition: service_healthy
     environment:
       PGPASSWORD: postgres
-    entrypoint: ["sh", "-c", "until pg_isready -h postgres -U postgres; do sleep 1; done; psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_cart OWNER postgres;\" && psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_orders OWNER postgres;\" && psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_products OWNER postgres;\" && psql -h postgres -U postgres -c \"CREATE DATABASE IF NOT EXISTS shophouse_users OWNER postgres;\" && psql -h postgres -U postgres -c \"ALTER USER postgres WITH PASSWORD 'postgres';\"; echo Init complete; sleep 2"]
+    entrypoint:
+      - sh
+      - -c
+      - |
+        until pg_isready -h postgres -U postgres; do sleep 1; done
+        psql -h postgres -U postgres <<-EOSQL
+          SELECT 'CREATE DATABASE shophouse_cart OWNER postgres'
+          WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'shophouse_cart')\gexec
+        
+          SELECT 'CREATE DATABASE shophouse_orders OWNER postgres'
+          WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'shophouse_orders')\gexec
+        
+          SELECT 'CREATE DATABASE shophouse_products OWNER postgres'
+          WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'shophouse_products')\gexec
+        
+          SELECT 'CREATE DATABASE shophouse_users OWNER postgres'
+          WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'shophouse_users')\gexec
+        
+          ALTER USER postgres WITH PASSWORD 'postgres';
+        EOSQL
+        echo "Database initialization complete"
+        sleep 2
     restart: "no"
     networks:
       - shophouse-network
@@ -89,7 +110,8 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8073/actuator/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 60s
     networks:
       - shophouse-network
 
@@ -108,11 +130,14 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      postgres-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8070/actuator/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 60s
     networks:
       - shophouse-network
 
@@ -131,11 +156,14 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      postgres-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 60s
     networks:
       - shophouse-network
 
@@ -154,11 +182,14 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      postgres-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 60s
     networks:
       - shophouse-network
 
@@ -177,11 +208,14 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      postgres-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8071/actuator/health"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 60s
     networks:
       - shophouse-network
 
@@ -223,4 +257,3 @@ volumes:
 networks:
   shophouse-network:
     driver: bridge
-
