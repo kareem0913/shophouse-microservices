@@ -58,6 +58,70 @@ The system follows a **microservices-based architecture** with the following key
 
 ---
 
+
+## 📁 Project Structure
+
+```
+shophouse-microservices/
+├── configserver/              # Spring Cloud Config Server
+│   ├── src/main/java/
+│   ├── src/main/resources/
+│   │   └── config/           # Config files for all services
+│   └── pom.xml
+│
+├── eurekaserver/              # Eureka Service Discovery
+│   ├── src/main/java/
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── gatewayserver/             # Spring Cloud API Gateway
+│   ├── src/main/java/
+│   │   ├── filter/           # Custom gateway filters
+│   │   ├── security/         # JWT token provider
+│   │   ├── config/           # Route configurations
+│   │   └── util/
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── cart/                       # Cart Microservice
+│   ├── src/main/java/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── entity/
+│   │   └── dto/
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── users/                      # Users & Auth Microservice
+│   ├── src/main/java/
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── products/                   # Products Microservice
+│   ├── src/main/java/
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── orders/                     # Orders Microservice
+│   ├── src/main/java/
+│   │   ├── service/
+│   │   │   └── client/       # Feign clients for inter-service calls
+│   │   └── ...
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── files/                      # Files Management Service
+│   ├── src/main/java/
+│   ├── src/main/resources/
+│   └── pom.xml
+│
+├── docker-compose.yml          # Docker Compose configuration
+├── shophouse-microservice.postman_collection.json
+└── README.md
+```
+
+---
+
 ## 🔧 Services
 
 ### 1. **Config Server** (Port 8072)
@@ -216,12 +280,6 @@ The system follows a **microservices-based architecture** with the following key
    docker compose up
    ```
 
-4. **Verify services are running:**
-   ```bash
-   # Wait 30-40 seconds for all services to start
-   docker compose ps
-   ```
-
 ### Stopping Services
 ```bash
 docker compose down
@@ -246,113 +304,30 @@ docker compose down -v
 
 ---
 
-## 📁 Project Structure
+## 🔌 Circuit Breaker Actuator URLs
 
-```
-shophouse-microservices/
-├── configserver/              # Spring Cloud Config Server
-│   ├── src/main/java/
-│   ├── src/main/resources/
-│   │   └── config/           # Config files for all services
-│   └── pom.xml
-│
-├── eurekaserver/              # Eureka Service Discovery
-│   ├── src/main/java/
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── gatewayserver/             # Spring Cloud API Gateway
-│   ├── src/main/java/
-│   │   ├── filter/           # Custom gateway filters
-│   │   ├── security/         # JWT token provider
-│   │   ├── config/           # Route configurations
-│   │   └── util/
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── cart/                       # Cart Microservice
-│   ├── src/main/java/
-│   │   ├── controller/
-│   │   ├── service/
-│   │   ├── entity/
-│   │   └── dto/
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── users/                      # Users & Auth Microservice
-│   ├── src/main/java/
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── products/                   # Products Microservice
-│   ├── src/main/java/
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── orders/                     # Orders Microservice
-│   ├── src/main/java/
-│   │   ├── service/
-│   │   │   └── client/       # Feign clients for inter-service calls
-│   │   └── ...
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── files/                      # Files Management Service
-│   ├── src/main/java/
-│   ├── src/main/resources/
-│   └── pom.xml
-│
-├── docker-compose.yml          # Docker Compose configuration
-├── shophouse-microservice.postman_collection.json
-└── README.md
-```
+This project uses Resilience4j (via Spring Cloud Circuit Breaker) for fault tolerance. Each service that uses circuit breakers exposes actuator endpoints that let you inspect circuit breaker status and events. Below are the commonly available endpoints and the correct URLs for each service (replace host/port if you changed them in `docker-compose.yml`).
 
----
+Service URLs (default ports used in this repository):
 
-## ⚙️ Configuration
+- API Gateway (GatewayServer) — port 8075
+  - Circuit breakers list: http://localhost:8075/actuator/circuitbreakers
+  - Circuit breaker events: http://localhost:8075/actuator/circuitbreakerevents
 
-### Environment Variables
+- Products Service — port 8070
+  - Circuit breakers list: http://localhost:8070/actuator/circuitbreakers
+  - Circuit breaker events: http://localhost:8070/actuator/circuitbreakerevents
 
-Services use Spring profiles to load environment-specific configurations:
+- Cart Service — port 8080
+  - Circuit breakers list: http://localhost:8080/actuator/circuitbreakers
+  - Circuit breaker events: http://localhost:8080/actuator/circuitbreakerevents
 
-**Docker Environment** (`-docker.properties`):
-- Optimized for container deployment
-- Service discovery enabled
-- Database connections via service names
-
-**Local Environment** (`-local.properties`):
-- Development settings
-- Local database connections
-- Debug logging enabled
-
-### Resilience Configuration
-
-Edit the Config Server files to adjust resilience settings:
-
-```properties
-# Circuit Breaker
-resilience4j.circuitbreaker.config.default.slidingWindowSize=10
-resilience4j.circuitbreaker.config.default.failureRateThreshold=50
-resilience4j.circuitbreaker.config.default.waitDurationInOpenState=10000
-
-# Retry
-resilience4j.retry.config.default.maxRetryAttempts=3
-resilience4j.retry.config.default.waitDuration=1000
-```
-
-### Security Configuration
-
-JWT secret key and expiration are managed in the Config Server:
-
-```properties
-app.properties.jwt-secret=mySecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm
-app.properties.jwt-expiration=3600000  # 1 hour in milliseconds
-```
+- Orders Service — port 8081
+  - Circuit breakers list: http://localhost:8081/actuator/circuitbreakers
+  - Circuit breaker events: http://localhost:8081/actuator/circuitbreakerevents
 
 ---
 
 ## 📧 Contact
 
 - **Email:** kareem.345@outlook.com
-
-
