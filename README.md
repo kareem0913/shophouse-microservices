@@ -116,28 +116,6 @@ The system follows a **microservices-based architecture** with the following key
 
 ---
 
-## 🛠️ Technology Stack
-
-| Component | Technology | Version |
-|-----------|-----------|---------|
-| **Language** | Java | 21 |
-| **Framework** | Spring Boot | 4.0+ |
-| **Config Management** | Spring Cloud Config | 2025.1.0 |
-| **Service Discovery** | Netflix Eureka | Spring Cloud |
-| **API Gateway** | Spring Cloud Gateway | Spring Cloud |
-| **Inter-Service Communication** | OpenFeign | Spring Cloud |
-| **Resilience** | Resilience4j | Spring Cloud |
-| **Database** | PostgreSQL | 15 (Alpine) |
-| **ORM** | Spring Data JPA / Hibernate | 6.4+ |
-| **Validation** | Spring Validation | 6.0+ |
-| **Mapping** | MapStruct | 1.6.3 |
-| **Security** | Spring Security + JWT | Spring 6.0+ |
-| **API Docs** | SpringDoc OpenAPI (Swagger 3.0) | 2.8.8 |
-| **Containerization** | Docker & Docker Compose | Latest |
-| **Build Tool** | Maven | 3.6+ |
-
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
